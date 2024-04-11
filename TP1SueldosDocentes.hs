@@ -15,7 +15,5 @@ antiguedad x | x >= 24 = 2.2
              | otherwise = 1
 
 cantidadHoras :: Float -> Int
-cantidadHoras x = round (x/10) 
-
--- Parte 2
-
+cantidadHoras x | x < 50 && x > 0 = round (x/10)
+                | otherwise = 0 
