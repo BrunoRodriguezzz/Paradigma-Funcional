@@ -67,5 +67,5 @@ esCuadradoPerfecto x = cuadradosPerfectos x 0
 
 cuadradosPerfectos :: Int -> Int -> Bool
 cuadradosPerfectos x y | x == y*y = True
-                       | x < y*y = cuadradosPerfectos x (y+1)
+                       | x > y*y = cuadradosPerfectos x (y+1)
                        | otherwise = False
