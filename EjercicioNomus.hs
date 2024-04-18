@@ -29,10 +29,11 @@ data Poder = UnPoder
   }
 
 probCriticoUltPoder :: Nomus -> Float
-probCriticoUltPoder (UnNomus _ _ _ _ _ _ poderes) = probabilidadCriticoPoder (extraerUltPoder poderes)
+probCriticoUltPoder (UnNomus _ _ _ _ _ _ poderes) = (probabilidadCriticoPoder.last) poderes
+--probCriticoUltPoder (UnNomus _ _ _ _ _ _ poderes) = (probabilidadCriticoPoder.extraerUltPoder) poderes
 
 probabilidadCriticoPoder :: Poder -> Float
 probabilidadCriticoPoder (UnPoder probCritico _ _ _) = probCritico
 
-extraerUltPoder :: [Poder] -> Poder
-extraerUltPoder [x] = last [x]
+-- extraerUltPoder :: [Poder] -> Poder
+-- extraerUltPoder [x] = last [x]
