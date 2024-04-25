@@ -1,3 +1,4 @@
+
 -- Ejercicios listas:
 -- 1) Definir una función que sume una lista de números.
 --    Nota: Investigar sum
@@ -150,3 +151,87 @@ esMultiploDeAlguno nro lista = any (esMultiploDe nro) lista
 -- Main> promedios [[8,6],[7,9,4],[6,2,4],[9,6]] 
 -- [7,6.67,4,7.5] 
 -- Nota: Implementar una solución utilizando map/2. 
+
+promedios:: [[Float]] -> [Float]
+promedios listaDeListas = map promedioDeLista listaDeListas
+
+promedioDeLista :: [Float] -> Float
+promedioDeLista lista = (sum lista) / fromIntegral(length lista)
+
+-- 3) Armar una función promediosSinAplazos que dada una lista de listas me devuelve la lista de los promedios de cada 
+-- lista-elemento, excluyendo los que sean menores a 4 que no se cuentan. P.ej. 
+-- Main> promediosSinAplazos [[8,6],[6,2,6]] 
+-- [7,6] 
+-- Nota: Implementar una solución utilizando map/2. 
+
+promediosSinAplazos :: [[Float]] -> [Float]
+promediosSinAplazos listaDeListas = filter (4<) (promedios listaDeListas)
+
+-- 4) Definir la función mejoresNotas, que dada la información de un curso devuelve la lista con la mejor nota de cada alumno. P.ej. 
+-- Main> mejoresNotas [[8,6,2,4],[7,9,4,5],[6,2,4,2],[9,6,7,10]] 
+-- [8,9,6,10]. 
+-- Ayuda: Utilizar la función predefinida maximum/1. 
+
+mejoresNotas :: [[Float]] -> [Float] --no hace falta poner en este caso la variable que recibe
+mejoresNotas = map maximum 
+
+-- 5) Definir la función aprobó/1, que dada la lista de las notas de un alumno devuelve True
+--  si el alumno aprobó. Se dice que un alumno aprobó si todas sus notas son 6 o más. P.ej. 
+-- Main> aprobo [8,6,2,4] 
+-- False 
+-- Main> aprobo [7,9,6,8] 
+-- True 
+-- Ayuda: Utilizar la función predefinida minimum/1. 
+
+aprobo :: [Int] -> Bool
+aprobo = all (6>)
+
+-- 6) Definir la función aprobaron/1, que dada la información de un curso devuelve 
+-- la información de los alumnos que aprobaron. P.ej. 
+-- Main> aprobaron [[8,6,2,4],[7,9,6,7],[6,2,4,2],[9,6,7,10]] 
+-- [[7,9,6,7],[9,6,7,10]] 
+-- Ayuda: usar la función aprobó/1. 
+
+aprobaron :: [[Int]] -> [[Int]]
+aprobaron = filter aprobo
+
+-- 7) Definir la función divisores/1, que recibe un número y devuelve la lista de divisores. P.ej. 
+-- Main> divisores 60 
+-- [1,2,3,4,5,6,10,12,15,20,30,60] 
+-- Ayuda: para calcular divisores n alcanza con revisar los números entre 1 y n. 
+
+esDivisor :: Int -> Int -> Bool
+esDivisor numero divisor = numero `mod` divisor == 0
+
+divisores :: Int -> [Int]
+divisores n = filter (esDivisor n) [1..n]
+
+-- 8) Definir la función exists/2, que dadas una función booleana y una lista devuelve True 
+-- si la función da True para algún elemento de la lista. P.ej. 
+-- Main> exists even [1,3,5] 
+-- False 
+-- Main> exists even [1,4,7] 
+-- True 
+-- porque even 4 da True 
+
+exists :: (a -> Bool) -> [a] -> Bool --NO ME LO PUEDO CREER MADRE MIA WILLY
+exists = any 
+
+-- 9) Definir la función hayAlgunNegativo/2, que dada una lista de números y 
+-- un (…algo…) devuelve True si hay algún nro. negativo. 
+-- Main> hayAlgunNegativo [2,-3,9] (…algo…) 
+-- True 
+
+hayAlgunNegativo :: [Int] -> a -> Bool
+hayAlgunNegativo lista algo = any (0>) lista
+
+-- 10) Definir la función aplicarFunciones/2, que dadas una lista de funciones y un valor 
+-- cualquiera, devuelve la lista del resultado de aplicar las funciones al valor. P.ej. 
+-- Main> aplicarFunciones[(*4),(+3),abs] (-8) 
+-- [-32,-5,8] 
+-- Si pongo:
+-- Main> aplicarFunciones[(*4),even,abs] 8 
+-- da error. ¿Por qué? 
+
+aplicarFunciones :: [(a -> b)] -> a -> [b]
+aplicarFunciones listaFunciones valor = map listaFunciones valor
