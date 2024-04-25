@@ -88,3 +88,4 @@ notasFinales ((parc1, parc2), (recu1, recu2)) = (max parc1 recu1, max parc2 recu
 recuperoDeGusto :: ((Int, Int), (Int, Int)) -> Bool
 recuperoDeGusto ((parc1, parc2), (recu1, recu2)) = promociono (fst ((parc1, parc2), (recu1, recu2))) && fst(snd ((parc1, parc2), (recu1, recu2))) /= -1 --falta el otro -1 
 
+-- Faltan el 6 y 7 (que tienen composicion y aplicacion parcial)

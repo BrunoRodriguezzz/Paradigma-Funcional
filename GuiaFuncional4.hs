@@ -72,3 +72,81 @@ cuandoHizoMasLlamadas :: ((String, [Int]), (String, [Int])) -> String
 cuandoHizoMasLlamadas ((horRed, lista1), (horNorm, lista2))
   | length lista1 > length lista2 = "Horario Reducido"
   | length lista1 < length lista2 = "Horario Normal"
+
+-- Orden Superior
+-- 1) Definir la función existsAny/2, que dadas una función booleana y una tupla de tres elementos devuelve True si existe algún
+-- elemento de la tupla que haga verdadera la función.
+-- Main> existsAny even (1,3,5)
+-- False
+
+-- Main> existsAny even (1,4,7)
+-- True
+-- porque even 4 da True
+
+-- Main> existsAny (0>) (1,-3,7)
+-- True
+-- porque even -3 es negativo
+
+existsAny :: (Int -> Bool) -> (Int, Int, Int) -> Bool
+existsAny f (n1, n2, n3) = f n1 || f n2 || f n3
+
+-- 2) Definir la función mejor/3, que recibe dos funciones y un número, y devuelve el resultado de la función que dé un valor más alto. P.ej.
+-- Main> mejor cuadrado triple 1
+-- 3
+-- (pues triple 1 = 3 > 1 = cuadrado 1)
+
+-- Main> mejor cuadrado triple 5
+-- 25
+-- (pues cuadrado 5 = 25 > 15 = triple 5)
+-- Nota: No olvidar la función max.
+
+mejorDeDosF :: (Int -> Int) -> (Int -> Int) -> Int -> Int
+mejorDeDosF f g numero
+  | f numero > g numero = f numero
+  | otherwise = g numero
+
+-- 3) Definir la función aplicarPar/2, que recibe una función y un par, 
+-- y devuelve el par que resulta de aplicar la función a los elementos del par. P.ej. 
+-- Main> aplicarPar doble (3,12) 
+-- (6,24) 
+
+-- Main> aplicarPar even (3,12) 
+-- (False, True) 
+
+-- Main> aplicarPar (even . doble) (3,12) 
+-- (True, True) 
+ 
+aplicarPar ::  (a -> b) -> (a, a) -> (b, b)
+aplicarPar f (nro1, nro2) = (f nro1, f nro2)
+
+-- 4) Definir la función parDeFns/3, que recibe dos funciones y un valor, y devuelve un par ordenado que 
+-- es el resultado de aplicar las dos funciones al valor. P.ej. 
+-- Main> parDeFns even doble 12 
+-- (True, 24) 
+
+parDeFns :: (a -> b) -> (a -> c) -> a -> (b, c) --se puede declarar funciones si determinar el tipo de variables
+parDeFns f g nro = (f nro, g nro)
+
+-- Orden superior o listas
+
+-- 1) Definir la función esMultiploDeAlguno/2, que recibe un número y una lista y devuelve True 
+-- si el número es múltiplo de alguno de los números de la lista. P.ej. 
+-- Main> esMultiploDeAlguno 15 [2,3,4] 
+-- True, 
+-- porque 15 es múltiplo de 3 
+
+-- Main> esMultiploDeAlguno 34 [3,4,5] 
+-- False 
+-- porque 34 no es múltiplo de ninguno de los 3 Nota: Utilizar la función any/2
+
+esMultiploDe :: Int -> Int -> Bool
+esMultiploDe x y = mod y x==0
+
+esMultiploDeAlguno :: Int -> [Int] -> Bool
+esMultiploDeAlguno nro lista = any (esMultiploDe nro) lista
+
+-- 2) Armar una función promedios/1, que dada una lista de listas me devuelve la 
+-- lista de los promedios de cada lista-elemento. P.ej. 
+-- Main> promedios [[8,6],[7,9,4],[6,2,4],[9,6]] 
+-- [7,6.67,4,7.5] 
+-- Nota: Implementar una solución utilizando map/2. 
