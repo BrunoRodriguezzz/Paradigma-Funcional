@@ -88,4 +88,29 @@ notasFinales ((parc1, parc2), (recu1, recu2)) = (max parc1 recu1, max parc2 recu
 recuperoDeGusto :: ((Int, Int), (Int, Int)) -> Bool
 recuperoDeGusto ((parc1, parc2), (recu1, recu2)) = promociono (fst ((parc1, parc2), (recu1, recu2))) && fst(snd ((parc1, parc2), (recu1, recu2))) /= -1 --falta el otro -1 
 
--- Faltan el 6 y 7 (que tienen composicion y aplicacion parcial)
+-- 6) Definir la función esMayorDeEdad, que dada una tupla de 2 elementos (persona, edad) me devuelva 
+-- True si es mayor de 21 años y False en caso contrario. Por Ej:.
+-- Main> esMayorDeEdad (juan,18) 
+-- False 
+-- Nota: Definir la función utilizando aplicación parcial y composición
+
+esMayorDeEdad :: (String, Int) -> Bool
+esMayorDeEdad = (>21).snd
+
+-- 7) Definir la función calcular, que recibe una tupla de 2 elementos, si el primer elemento es par lo duplica, 
+-- sino lo deja como está y con el segundo elemento en caso de ser impar le suma 1 y si no deja esté último como esta. 
+-- Main> calcular (4,5)
+-- (8,6) 
+-- Main> calcular (3,7)
+-- (3,8) 
+-- Nota: Resolverlo utilizando aplicación parcial y composición. 
+
+calcular :: (Int, Int) -> (Int, Int)
+calcular tupla | (even.fst) tupla && (odd.snd) tupla = (((2*).fst) tupla, ((1+).snd) tupla)
+  | (even.fst) tupla = (((2*).fst) tupla, snd tupla)
+  | (odd.snd) tupla = (fst tupla, ((1+).snd) tupla)
+  | otherwise = tupla
+
+
+
+
