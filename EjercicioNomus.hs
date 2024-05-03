@@ -5,9 +5,12 @@ data Nomus = UnNomus
     color :: String,
     vida :: Int,
     fuerza :: Int,
-    poderes :: [Poder]  }
+    poderes :: [Poder]  } deriving Show -- Permite mostrar el nomu en terminal de forma estandar
 
 -- Parte 1
+-- En haskell no existen variables porque los datos no varian durante la ejecucion 
+-- Es decir que si por ejemplo hago una funcion que entrene a un nomus y devuelva un nomus con mas fuerza
+-- la funcion va a devolver otro nomus con mas fuerza, pero no la modifico del que recibo.
 
 puedeVer :: Nomus -> Bool
 puedeVer (UnNomus _ _ ojos _ _ _ _) = ojos >= 1
