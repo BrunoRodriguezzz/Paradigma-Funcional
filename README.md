@@ -17,7 +17,7 @@ Cosas de listas: Lo fundamental es que todos los elementos son del mismo tipo
 - Se puede declarar listas de cierto valor a otro valor [1.. 4] = [1,2,3,4]
 - Tambien se pueden hacer en orden inverso [6,5.. 1] = [6,5,4,3,2,1]
 - O hacer la lista infinita [1..]
-- tabla n = [n, 2*n..]
+- Tabla n = [n, 2*n..]
 - Lo que es muy util es que se puede hacer [n1.. n2] siempre que n2>n1 y a su vez n1 y n2 pueden ser valores que reciba una funcion y arme la lista de n1 a n2
 - El : en una lista devuelve del lado izquierdo la cabeza de la lista y a derecha el resto de la lista. (cabeza:cola), funcioa solo cuando la lista tiene almenos un elemento.
 - El !! sirve devolver necesita una lista y un valor, por ejemplo [1,2,3,4] !! 2 devuelve 3, ya que el indice comienza en 0
