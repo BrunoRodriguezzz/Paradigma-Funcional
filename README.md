@@ -1,23 +1,41 @@
 # Paradigma-Funcional
-En este repositorio estan mis ejercicios de paradigma funcional.
+En este repositorio estan mis ejercicios de paradigma funcional, y mis apuntes.
 
 Apuntes: 
+
+Basico
+
+- Expresividad (tiene que poder se entendido)
+- Declaratividad (Concentrarme en que quiero y no tanto en como)
+- No repetir logica
 
 Cosas importantes basicas:
 - Los tipos de datos como por ejemplo int, cuando aparecen en una declaracion de una funcion o de un tipo de data tienen que empezar en mayusculas.
 - Misma regla para los tipos de datos que creemos y sus constructores
 
-Cosas de listas:
+Cosas de listas: Lo fundamental es que todos los elementos son del mismo tipo
 - Se puede declarar listas de cierto valor a otro valor [1.. 4] = [1,2,3,4]
 - Tambien se pueden hacer en orden inverso [6,5.. 1] = [6,5,4,3,2,1]
 - O hacer la lista infinita [1..]
 - tabla n = [n, 2*n..]
 - Lo que es muy util es que se puede hacer [n1.. n2] siempre que n2>n1 y a su vez n1 y n2 pueden ser valores que reciba una funcion y arme la lista de n1 a n2
+- El : en una lista devuelve del lado izquierdo la cabeza de la lista y a derecha el resto de la lista. (cabeza:cola), funcioa solo cuando la lista tiene almenos un elemento.
+- El !! sirve devolver necesita una lista y un valor, por ejemplo [1,2,3,4] !! 2 devuelve 3, ya que el indice comienza en 0
 
-El : en una lista devuelve del lado izquierdo la cabeza de la lista y a derecha el resto de la lista. (cabeza:cola), funcioa solo cuando la lista tiene almenos un elemento.
-El !! sirve devolver necesita una lista y un valor, por ejemplo [1,2,3,4] !! 2 devuelve 3, ya que el indice comienza en 0
+Tuplas
+Consiste en una lista de elementos que pueden ser de distintos tipos, se declaran con ()
+Ejemplo: (1,"hola",True)
+la diferencia principalmente es que tienen un tamaño fijo, y las funciones que se le pueden aplicar son distintas.  
 
 Funciones:
+
+El uso de guardas permite establecer que hace una funcion en distintos casos, es importante no usar guardas de mas
+Por ejemplo
+f x | x == 1 = 3
+    | x == 2 = 1
+    | x == 3 = 2
+    | otherwise = 0 si no esperamos que reciba otro valor que no sea 1,2 o 3 no se pone el otherwise, es preferible el error antes que esconderlo con un valor.
+En este caso la funcion nos devuelve 3 si mandamos 1, 1 si mandamos 2 o 2 si mandammos 3, pero si no cumple ninguno devuelve 0
 
 map es una funcion que recibe una funcion y una lista y aplica esa funcion en cada elemento de la lista 
 Ejemplo map (3*) [1,2,3,4,5] = [3,6,9,12,15]  multiplica cada elemento por 3
@@ -35,6 +53,16 @@ foldl1 lo aplica en funciones cerradas por ejemplo
 foldl1 max [1,2,4,3,6,5] = 6, en este caso lo que hace es el maximo entre 1 y 2, despues con ese resultado hace max resultado 4 y asi sucesivamente
 
 En este caso no se podria aplicar fold max [1,2,4,3,6,5], porque max espera dos valores.
+
+Aplicacion parcial
+
+Basicamente y resumido consiste en utilizar funciones sin hacer uso de todos sus parametros
+Ejemplo: la funcion (+) recibe dos parametros para poder hacer la suma pero si solo le mando un parametro, lo que obtengo en vez de un valor (que seria lo que devuelve +) es una nueva funcion. Mi nueva funcion queda (3+) que cuando le pase un numero le suma 3. Otro ejemplo puede ser (^2) que cuando recibe un numero lo eleva al cuadrado.
+
+Composicion
+
+El concepto es exactamente el mismo que para matematica f o g = f(g(x))
+Ejemplo: (2*).(3*) 4 = 24 = 2*(3*4)
 
 Data
 
