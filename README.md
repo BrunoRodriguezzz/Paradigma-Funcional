@@ -14,10 +14,14 @@ Cosas de listas:
 - tabla n = [n, 2*n..]
 - Lo que es muy util es que se puede hacer [n1.. n2] siempre que n2>n1 y a su vez n1 y n2 pueden ser valores que reciba una funcion y arme la lista de n1 a n2
 
-El : en una lista devuelve del lado izquierdo la cabeza de la lista y a derecha el resto de la lista. (cabeza:cola), funcioa solo cuando la lista tiene almenos un elemento.
+El : en una lista devuelve del lado izquierdo la cabeza de la lista y a derecha el resto de la lista. (cabeza:cola), funciona solo cuando la lista tiene almenos un elemento.
 El !! sirve devolver necesita una lista y un valor, por ejemplo [1,2,3,4] !! 2 devuelve 3, ya que el indice comienza en 0
 
 Funciones:
+
+div es una funcion que sirve para dividir dos numeros, muy util para trabajar con enteros.
+
+elem es una funcion que toma un elemento y una lista e indica si ese elemento esta en la lista.
 
 map es una funcion que recibe una funcion y una lista y aplica esa funcion en cada elemento de la lista 
 Ejemplo map (3*) [1,2,3,4,5] = [3,6,9,12,15]  multiplica cada elemento por 3

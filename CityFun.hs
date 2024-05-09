@@ -1,3 +1,6 @@
+import Data.List (sort)
+-- Lo sacamos de la guia ↑↑ para poder usar sort
+
 -- Punto 1: Valor de una ciudad
 -- Valor de una ciudad 
 -- Definir el valor de una ciudad, un número que se obtiene de la siguiente manera:
@@ -33,8 +36,8 @@ inicialVocal palabra = head palabra `elem` "aeiouAEIOUáéíóúÁÉÍÓÚ"
 -- El valor x tiene que poder configurarse
 
 esCiudadSobria:: Ciudad -> Int -> Bool
-esCiudadSobria ciudad num     | length (atracciones ciudad) == 0 = False
-                              | otherwise = all (masLargoQueNum num) (atracciones ciudad)
+esCiudadSobria ciudad num     | length (atracciones ciudad) == 0 = False -- Se repite la logica -> condicion && condicion && evitar guardas
+                              | otherwise = all (masLargoQueNum num) (atracciones ciudad) -- 2 f una tiene atracciones y la otra tiene mas de null
 
 masLargoQueNum:: Int -> String -> Bool
 masLargoQueNum num palabra = length palabra > num
@@ -50,20 +53,20 @@ ciudadNombreRaro ciudad = length (nombre ciudad) < 5
 -- Sumar una nueva atracción
 -- Queremos poder agregar una nueva atracción a la ciudad. Esto implica un esfuerzo de toda la comunidad en tiempo y dinero, lo que se traduce en un incremento del costo de vida de un 20%.
 
-nuevaAtraccion :: Ciudad -> String -> Ciudad
-nuevaAtraccion ciudad nuevaAtraccion = ciudad {atracciones = (atracciones ciudad) ++ [nuevaAtraccion], costoDeVida = costoDeVida ciudad * 1.2}
+nuevaAtraccion :: String -> Ciudad -> Ciudad
+nuevaAtraccion atraccionNueva ciudad = ciudad {atracciones = (atracciones ciudad) ++ [atraccionNueva], costoDeVida = costoDeVida ciudad * 1.2}
 
 -- Crisis 
 -- Al atravesar una crisis, la ciudad baja un 10% su costo de vida y se debe cerrar la última atracción de la lista.
 
 atraviesaCrisis :: Ciudad -> Ciudad
-atraviesaCrisis ciudad = ciudad {atracciones = init (atracciones ciudad), costoDeVida = costoDeVida ciudad * 0.9}
-
+atraviesaCrisis ciudad | length (atracciones ciudad) == 0 = ciudad {costoDeVida = costoDeVida ciudad * 0.9}
+                       | otherwise = ciudad {atracciones = init (atracciones ciudad), costoDeVida = costoDeVida ciudad * 0.9}
 -- Remodelación 
 -- Al remodelar una ciudad, incrementa su costo de vida un porcentaje que se indica al hacer la remodelación y le agrega el prefijo "New " al nombre.
 
-remodelacionCiudad:: Ciudad -> Float -> Ciudad
-remodelacionCiudad ciudad porcentaje = ciudad {nombre = "New " ++ nombre ciudad, costoDeVida = costoDeVida ciudad * (porcentaje/100 + 1) }
+remodelacionCiudad:: Float -> Ciudad -> Ciudad
+remodelacionCiudad porcentaje ciudad = ciudad {nombre = "New " ++ nombre ciudad, costoDeVida = costoDeVida ciudad * (porcentaje/100 + 1) }
 
 -- Se considera que el dato llega sin % desde el modulo que se encarga de la entrada salida
 
@@ -71,12 +74,82 @@ remodelacionCiudad ciudad porcentaje = ciudad {nombre = "New " ++ nombre ciudad,
 -- Si la ciudad es sobria con atracciones de más de n letras (valor que se quiere configurar), aumenta el costo de vida un 10%, si no baja 3 puntos.
 
 
-reevaluacionCiudad:: Ciudad -> Int -> Ciudad
-reevaluacionCiudad ciudad letras   |esCiudadSobria ciudad letras == True = ciudad {costoDeVida = costoDeVida ciudad * 1.10}
-                                   |esCiudadSobria ciudad letras == False = ciudad {costoDeVida = costoDeVida ciudad - 3}
-
+reevaluacionCiudad:: Int -> Ciudad -> Ciudad
+reevaluacionCiudad letras ciudad   |esCiudadSobria ciudad letras = ciudad {costoDeVida = costoDeVida ciudad * 1.10}
+                                   |otherwise = ciudad {costoDeVida = costoDeVida ciudad - 3}
+--Con la misma condicion es preferible poner un otherwise
 laTransformacionNoPara :: Ciudad -> Int -> Float -> Ciudad
-laTransformacionNoPara ciudad letras porcentaje = (flip reevaluacionCiudad letras . atraviesaCrisis . flip remodelacionCiudad porcentaje) ciudad
+laTransformacionNoPara ciudad letras porcentaje = (reevaluacionCiudad letras . atraviesaCrisis . remodelacionCiudad porcentaje) ciudad
+-- Cambiar orden parametros
+-- Punt 4
+-- 4.1 Los años pasan... 
+-- Queremos modelar un año, donde definamos
+-- el número que le corresponde
+-- una serie de eventos que se produjeron
+-- También queremos reflejar el paso de un año para una ciudad, es decir, que los eventos afecten el estado final en el que queda una ciudad.
+
+data Anio = UnAnio {
+    numero :: Int,
+    eventos :: [(Ciudad->Ciudad)]
+}
+
+reflejarAnio :: Ciudad -> Anio -> Ciudad
+reflejarAnio ciudad anio = foldl (\ciudad funcion -> funcion ciudad) ciudad (eventos anio)
+
+-- 4.2  Algo mejor 
+-- Implementar una función que reciba una ciudad, un criterio de comparación y un evento, 
+-- de manera que nos diga si la ciudad tras el evento subió respecto a ese criterio. 
+
+
+-- Ord es un tipo de dato ordenable que permite la comparación. Por ejemplo Int, String, Float, Char son todos tipos de datos comparables.
+-- El debugger nos recomendó agregar Ord a para poder hacer la comparación entre los criterios.
+subioPostEvento :: Ord a => Ciudad -> (Ciudad -> a) -> (Ciudad -> Ciudad) -> Bool
+subioPostEvento ciudad criterio evento = criterio (evento ciudad) > criterio ciudad
+
+-- 4.3 Costo de vida que suba 
+-- Para un año, queremos aplicar sobre una ciudad solo los eventos que hagan que el costo de vida suba. 
+-- Debe quedar como resultado la ciudad afectada con dichos eventos.
+costoDeVidaQueSuba :: Ciudad -> Anio -> Ciudad
+costoDeVidaQueSuba ciudad anio = foldl (\ciudad funcion -> funcion ciudad) ciudad (filter (subioCostoVida ciudad) (eventos anio))
+
+subioCostoVida :: Ciudad -> (Ciudad -> Ciudad) -> Bool
+subioCostoVida ciudad evento = costoDeVida (evento ciudad) > costoDeVida ciudad
+
+-- 4.4 Costo de vida que baje  
+-- Para un año, queremos aplicar solo los eventos que hagan que el costo de vida baje. Debe quedar como resultado la ciudad afectada con dichos eventos.
+costoDeVidaQueBaje :: Ciudad -> Anio -> Ciudad
+costoDeVidaQueBaje ciudad anio = foldl (\ciudad funcion -> funcion ciudad) ciudad (filter (bajaCostoVida ciudad) (eventos anio))
+
+bajaCostoVida :: Ciudad -> (Ciudad -> Ciudad) -> Bool
+bajaCostoVida ciudad evento = costoDeVida (evento ciudad) < costoDeVida ciudad
+
+-- 4.5 Valor que suba  
+-- Para un año, queremos aplicar solo los eventos que hagan que el valor suba. Debe quedar como resultado la ciudad afectada con dichos eventos.
+valorQueSuba :: Ciudad -> Anio -> Ciudad
+valorQueSuba ciudad anio = foldl (\ciudad funcion -> funcion ciudad) ciudad (filter (subioValor ciudad) (eventos anio))
+
+subioValor :: Ciudad -> (Ciudad -> Ciudad) -> Bool
+subioValor ciudad evento = valorCiudad (evento ciudad) > valorCiudad ciudad
+-- En esta función en vez de 161.7 nos dio 147 el Costo de vida de Nullish, no sabemos por qué
+
+-- 5.1 Eventos ordenados 
+-- Dado un año y una ciudad, queremos saber si los eventos están ordenados en forma correcta, 
+-- esto implica que el costo de vida al aplicar cada evento se va incrementando respecto al anterior evento. Debe haber al menos un evento para dicho año.
+eventosOrdenados :: Anio -> Ciudad -> Bool
+eventosOrdenados anio ciudad = obtenerListaCostoDeVida anio ciudad == sort (obtenerListaCostoDeVida anio ciudad)
+
+obtenerListaCostoDeVida :: Anio -> Ciudad -> [Float]
+obtenerListaCostoDeVida anio ciudad = map (costoDeVida . (\funcion -> funcion ciudad)) (eventos anio)
+
+-- 5.2 Ciudades ordenadas
+-- Dado un evento y una lista de ciudades, queremos saber si esa lista está ordenada. Esto implica que el costo de vida al aplicar 
+-- el evento sobre cada una de las ciudades queda en orden creciente. Debe haber al menos una ciudad en la lista.
+
+ciudadesOrdenadas :: (Ciudad -> Ciudad) -> [Ciudad] -> Bool
+ciudadesOrdenadas evento listaCiudades = map (costoDeVida.evento) listaCiudades == sort (map (costoDeVida.evento) listaCiudades)
+
+-- f = flip remodelacionCiudad 5 -- :o Esto es algo que recibe una ciudad y devuelve una ciudad
+-- type evento 
 
 -- Ejemplos para testear
 
@@ -91,11 +164,5 @@ ejMaipu = UnaCiudad "Maipú" 1878 ["Fortín Kakel"] 115
 ejAzul :: Ciudad
 ejAzul = UnaCiudad "Azul" 1832 ["Teatro Español","Parque Municipal Sarmiento","Costanera Cacique Catriel"] 190
 
--- Segunda parte
-
--- 4.1 Los años pasan... 
--- Queremos modelar un año, donde definamos
--- el número que le corresponde
--- una serie de eventos que se produjeron
-
--- También queremos reflejar el paso de un año para una ciudad, es decir, que los eventos afecten el estado final en el que queda una ciudad.
+ej2022 :: Anio
+ej2022 = UnAnio 2022 [atraviesaCrisis, remodelacionCiudad 5, reevaluacionCiudad 7]
