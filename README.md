@@ -1,5 +1,16 @@
-# Paradigma-Funcional
+# <p align="center">Paradigma-Funcional</p>
 En este repositorio estan mis ejercicios de paradigma funcional, y mis apuntes. 
+
+- [Paradigma-Funcional](#paradigma-funcional)
+    - [Basico](#basico)
+  - [Listas:](#listas)
+  - [Tuplas](#tuplas)
+  - [Funciones:](#funciones)
+  - [Aplicacion parcial](#aplicacion-parcial)
+  - [Composicion](#composicion)
+  - [Data](#data)
+  - [Recursividad](#recursividad)
+  - [Evaluacion diferida](#evaluacion-diferida)
 
 ### Basico
 
