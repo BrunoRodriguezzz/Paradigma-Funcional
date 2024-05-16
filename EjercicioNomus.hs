@@ -5,7 +5,7 @@ data Nomus = UnNomus
     color :: String,
     vida :: Int,
     fuerza :: Int,
-    poderes :: [Poder]  } deriving Show -- Permite mostrar el nomu en terminal de forma estandar
+    poderes :: [Poder]  } -- deriving Show -- Permite mostrar el nomu en terminal de forma estandar
 
 -- Parte 1
 -- En haskell no existen variables porque los datos no varian durante la ejecucion 

@@ -38,7 +38,7 @@ choque nave = incrementarEscudo nave{ataque = ataque nave +120, durabilidad = du
 -- Punto 2
 
 durabilidadTotal :: [Nave] -> Int
-durabilidadTotal = (sum . map durabilidad)
+durabilidadTotal = sum . map durabilidad
 
 -- Punto 3
 
