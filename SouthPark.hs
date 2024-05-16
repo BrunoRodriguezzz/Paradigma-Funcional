@@ -35,12 +35,15 @@ irATrabajar :: String -> Personaje -> Personaje
 irATrabajar trabajo personaje = UnPersonaje {dinero = dinero personaje + length trabajo}
 
 hacerDobleTurno :: String -> Personaje -> Personaje
-hacerDobleTurno trabajo personaje = UnPersonaje {felicidad = felicidad personaje - length trabajo, dinero = dinero personaje + ((2 *) . length) trabajo}
+hacerDobleTurno trabajo personaje = UnPersonaje {felicidad = max (felicidad personaje - length trabajo) 0, dinero = dinero personaje + ((2 *) . length) trabajo}
+-- no puede bajar la felicidad de 0 por eso el max 
 
 jugarWorldOfWarcraft :: Int -> Int -> Personaje -> Personaje
 jugarWorldOfWarcraft amigos horas personaje
   | horas < 5 = UnPersonaje {felicidad = felicidad personaje + 10 * amigos * horas, dinero = dinero personaje - 10 * horas}
   | otherwise = UnPersonaje {felicidad = felicidad personaje + 50 * amigos, dinero = dinero personaje - 10 * horas}
+
+-- se podria hacer un min entre horas y 5 para no hacer las guardas
 
 irAlGimnasio :: Int -> Personaje -> Personaje
 irAlGimnasio horas personaje = UnPersonaje {nombre = "Trembo " ++ nombre personaje, felicidad = felicidad personaje + 15 * horas, dinero = dinero personaje - 30} --El precio de la trembo

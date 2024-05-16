@@ -45,6 +45,8 @@ durabilidadTotal = (sum . map durabilidad)
 postAtaque :: Nave -> Nave -> Nave
 postAtaque naveAtacada naveAtacante = aplicarTodosLosPoderes naveAtacada
 
+-- no llegue a terminar
+
 -- Funcion adicional
 aplicarTodosLosPoderes :: Nave -> Nave
 aplicarTodosLosPoderes nave = foldl aplicarFunciones nave (poder nave)

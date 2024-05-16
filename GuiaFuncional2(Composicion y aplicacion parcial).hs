@@ -49,6 +49,7 @@ esMultiploDe x y = mod y x==0
 
 -- 7) Resolver la función del ejercicio 5 de la guía anterior esBisiesto/1, utilizando aplicación parcial y composición.
   -- Preguntar al profe.
+  
 -- esBisiesto :: Int -> Bool
 -- esBisiesto x = esMultiploDe x 400 || (esMultiploDe x 4 && not (esMultiploDe x 100))
 
