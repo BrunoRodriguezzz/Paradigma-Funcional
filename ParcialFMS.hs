@@ -224,4 +224,4 @@ alToke :: Jurado
 alToke = [(aabb.estrofa, 0.5), (patronCombinaDos patronEsdrujulas (patronSimple 1 4).estrofa, 1), (publicoExaltado, 1), ((>1.5).potencia, 2)] 
 
 calcularPuntaje :: Jurado -> PuestaEscena -> Float
-calcularPuntaje jurado escena = sum (map snd (filter (`fst` escena) jurado))
+calcularPuntaje jurado escena = sum (map snd (filter (`fst` escena) jurado)) 

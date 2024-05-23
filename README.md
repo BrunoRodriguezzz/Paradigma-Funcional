@@ -34,6 +34,9 @@ Lo fundamental es que **todos los elementos son del mismo tipo**, se usa [ ]
 - Lo que es muy util es que se puede hacer `[n1.. n2]` siempre que n2 > n1 y a su vez n1 y n2 pueden ser valores que reciba una funcion y arme la lista de n1 a n2
 - El : en una lista devuelve del lado izquierdo la cabeza de la lista y a derecha el resto de la lista. `(cabeza:cola)`, funciona solo cuando la lista tiene almenos un elemento. Por lo general se usa `(x:xs)`
 - El !! sirve devolver necesita una lista y un valor, por ejemplo `[1,2,3,4] !! 2` devuelve 3, ya que el indice comienza en 0
+- `repeat` Toma un valor valor y arma una lista infinita con ese valor, por ejemplo `repeat 5 = [5,5,5,5...]`
+- `cycle` Recibe una lista y la repite infinitamente, por ejemplo `cycle [1,2,3] = [1,2,3,1,2,3,1...]` o `cycle "hola" = ['h', 'o', 'l', 'a', 'h', 'o' ...]`
+- `words` Es una funcion que recibe un String y devuelve una lista de String sin los espacios, por ejemplo `words "hola a todos" = ["hola", "a", "todos"]`
 ---
 ## Tuplas
 Consiste en una **lista de elementos que pueden ser de distintos tipos**, se declaran con ( ). Ejemplo: (1,"hola",True)
