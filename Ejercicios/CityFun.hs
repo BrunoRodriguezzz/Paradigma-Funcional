@@ -1,4 +1,5 @@
 import Data.List (sort)
+
 -- Lo sacamos de la guia ↑↑ para poder usar sort
 
 -- Punto 1: Valor de una ciudad
@@ -141,14 +142,20 @@ eventosOrdenados anio ciudad = obtenerListaCostoDeVida anio ciudad == sort (obte
 obtenerListaCostoDeVida :: Anio -> Ciudad -> [Float]
 obtenerListaCostoDeVida anio ciudad = map (costoDeVida . (\funcion -> funcion ciudad)) (eventos anio)
 
--- 5.2 Ciudades ordenadas
--- Dado un evento y una lista de ciudades, queremos saber si esa lista está ordenada. Esto implica que el costo de vida al aplicar 
--- el evento sobre cada una de las ciudades queda en orden creciente. Debe haber al menos una ciudad en la lista.
-
+-- 5.2 Dado un evento y una lista de ciudades, queremos saber si esa lista está ordenada. 
+-- Esto implica que el costo de vida al aplicar el evento sobre cada una de las ciudades queda en orden creciente. 
+-- Debe haber al menos una ciudad en la lista.
 ciudadesOrdenadas :: (Ciudad -> Ciudad) -> [Ciudad] -> Bool
 ciudadesOrdenadas evento listaCiudades = map (costoDeVida.evento) listaCiudades == sort (map (costoDeVida.evento) listaCiudades)
 
--- f = flip remodelacionCiudad 5 -- :o Esto es algo que recibe una ciudad y devuelve una ciudad
+-- 5.3 Años ordenados
+-- Dada una lista de años y una ciudad, queremos saber si el costo de vida al aplicar todos los eventos de cada año sobre esa ciudad termina generando una serie de costos de vida ascendente 
+-- (de menor a mayor). Debe haber al menos un año en la lista.
+
+aniosOrdenados :: [Anio] -> Ciudad -> Bool
+aniosOrdenados anios ciudad | not (null anios) = map (costoDeVida . reflejarAnio ciudad) anios == sort (map (costoDeVida . reflejarAnio ciudad) anios)
+
+--f = flip remodelacionCiudad 5 -- :o Esto es algo que recibe una ciudad y devuelve una ciudad
 -- type evento 
 
 -- Ejemplos para testear
@@ -157,12 +164,41 @@ ejBaradero :: Ciudad
 ejBaradero = UnaCiudad "Baradero" 1615 ["Parque del Este", "Museo Alejandro Barbich"] 150
 ejNullish :: Ciudad
 ejNullish = UnaCiudad "Nullish" 1800 [] 140
-ejCaleta :: Ciudad
 ejCaleta = UnaCiudad "Caleta Olivia" 1901 ["El Gorosito","Faro Costanera"] 120
 ejMaipu :: Ciudad
 ejMaipu = UnaCiudad "Maipú" 1878 ["Fortín Kakel"] 115
-ejAzul :: Ciudad
 ejAzul = UnaCiudad "Azul" 1832 ["Teatro Español","Parque Municipal Sarmiento","Costanera Cacique Catriel"] 190
 
 ej2022 :: Anio
 ej2022 = UnAnio 2022 [atraviesaCrisis, remodelacionCiudad 5, reevaluacionCiudad 7]
+ej2021 :: Anio
+ej2021 = UnAnio 2021 [atraviesaCrisis, nuevaAtraccion "playa"]
+ej2023 :: Anio
+ej2023 = UnAnio 2022 [atraviesaCrisis, nuevaAtraccion "parque", remodelacionCiudad 10, remodelacionCiudad 20]
+ej2024 :: Anio
+ej2024 = UnAnio 2024 (eventosInfinitos atraviesaCrisis)
+
+-- Una serie de eventos interminables 
+-- Definir el año 2024 con una lista infinita de eventos.
+
+eventosInfinitos :: (Ciudad -> Ciudad) -> [Ciudad->Ciudad]
+eventosInfinitos evento = evento:eventosInfinitos evento
+
+-- Puede haber un resultado posible para la función del punto 5.1 (eventos ordenados) para el año 2024? Justificarlo relacionándolo con conceptos vistos en la materia
+
+-- En nuestro caso, al utilizar la función sort es imposible conseguir el resultado porque necesita recorrer toda la lista para saber si están ordenados.
+-- Si hubiesemos utilizado otra función que utilice el valor actual y el próximo podríamos obtener que la lista no está ordenada si en algun momento encuentra
+-- dos elementos que no cumplan con la condición de estar ordenados debido a la evaluación diferida.
+-- Pero si la lista es infinita nunca podríamos decir que sí está ordenada ya que nunca terminaríamos de recorrerla.
+
+-- Puede haber un resultado posible para la función del punto 5.2 (ciudades ordenadas) para el año 2024? Justificarlo relacionándolo con conceptos vistos en la materia?
+
+-- En este caso, no se utiliza un año, por lo que al no encontrar una lista infinita no habrá problemas con el sort. 
+
+-- Puede haber un resultado posible para la función del punto 5.3 (años ordenados) para el año 2024? Justificarlo relacionándolo con conceptos vistos en la materia?
+
+-- Al utilizar sort, por lo explicado antes, en nuestro caso no es posible. A su vez, no sería posible definir el valor de la función ya que, al encontrar el año 2024 en la
+-- lista de años, nunca terminaría el compilador de aplicarle todos los eventos, por lo que no sería posible luego evaluar la lista de costos de vida. 
+
+-- CONCLUSIÓN: Solo es posible decir si una lsita está desordenada, siempre que se utilice una función recursiva que relacione el elemento actual con el siguiente, algo que con
+-- la funcion sort no es posible. Luego nunca se podrá afirmar que una lista infinita está ordenada, ya que implicaría recorrerla por completo
