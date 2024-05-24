@@ -1,4 +1,4 @@
--- Enunciado: Hola, buen día. Arrancamos, les comparto el enunciado del parcial https://docs.google.com/document/d/1vfmY4xOaGVMtDCixKtA6rDugwWM86ZJaL7K5vDKcksA/edit?usp=sharing
+-- Enunciado: https://docs.google.com/document/d/1vfmY4xOaGVMtDCixKtA6rDugwWM86ZJaL7K5vDKcksA/edit?usp=sharing
 
 -- Punto 1
 
